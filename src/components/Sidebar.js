@@ -6,11 +6,15 @@ import {
   AppstoreOutlined,
 } from "@ant-design/icons"; // Import relevant icons
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 const Sidebar = ({ role, onRoleChange }) => {
+  const navigate = useNavigate();
   const isMenuopen = useSelector((store) => store.app.isMenuopen); // Check if the state is coming from Redux
 
   const [sidebarData, setSidebarData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]); // State for filtered sidebar data
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [showModal, setShowModal] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
 
@@ -20,6 +24,7 @@ const Sidebar = ({ role, onRoleChange }) => {
         const response = await fetch(`http://localhost:5000/sidebar/${role}`);
         const data = await response.json();
         setSidebarData(data);
+        setFilteredData(data); // Initialize filteredData with the fetched data
       } catch (error) {
         console.error("Error fetching sidebar data:", error);
       }
@@ -28,24 +33,46 @@ const Sidebar = ({ role, onRoleChange }) => {
     fetchSidebarData();
   }, [role]);
 
+  useEffect(() => {
+    if (searchQuery) {
+      const results = sidebarData
+        .map((item) => ({
+          ...item,
+          classes: item.classes?.filter((cls) =>
+            cls.subject.toLowerCase().includes(searchQuery.toLowerCase())
+          ),
+        }))
+        .filter((item) => item.classes?.length > 0);
+      setFilteredData(results);
+    } else {
+      setFilteredData(sidebarData);
+    }
+  }, [searchQuery, sidebarData]);
+
   const handleDropdownToggle = (itemId) => {
     setActiveDropdown(activeDropdown === itemId ? null : itemId);
   };
 
+  const handleClassClick = (id) => {
+    navigate(`/home/class/${id}`);
+  };
+
   return (
     isMenuopen && ( // Conditionally render Sidebar based on isMenuopen state
-      <div className="flex flex-col w-64 bg-white text-gray-700 h-screen p-4 mt-20 shadow-lg">
+      <div className="flex flex-col w-64 bg-white text-gray-700 h-screen p-4 mt-5 shadow-lg">
         <div className="mb-6">
           <div className="relative">
             <input
               type="text"
               placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full p-2 pl-10 border rounded-md bg-gray-100 focus:outline-none"
             />
           </div>
         </div>
         <ul className="space-y-2">
-          {sidebarData.map((item) => (
+          {filteredData.map((item) => (
             <li key={item.id} className="mb-2">
               <div
                 onClick={() => handleDropdownToggle(item.id)}
@@ -64,7 +91,8 @@ const Sidebar = ({ role, onRoleChange }) => {
                   {item.classes.map((cls, index) => (
                     <li
                       key={index}
-                      className="text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-200 p-2 rounded-md transition-colors duration-200"
+                      className="text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-200 cursor-pointer p-2 rounded-md transition-colors duration-200"
+                      onClick={() => handleClassClick(cls.id)}
                     >
                       {cls.subject} - {cls.section}
                     </li>

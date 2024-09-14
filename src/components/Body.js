@@ -1,12 +1,13 @@
+// Body.js
 import React, { useEffect } from "react";
-import Login from "./Login";
-import Dashboard from "./Dashboard";
-import { RouterProvider } from "react-router-dom";
-import { createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../utils/Frebase";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
+import Layout from "./Layout";
+import Login from "./Login";
+import Dashboard from "./Dashboard";
 import ClassDetail from "./ClassDetail";
 const Body = () => {
   const dispatch = useDispatch();
@@ -18,11 +19,17 @@ const Body = () => {
     },
     {
       path: "/home",
-      element: <Dashboard />,
-    },
-    {
-      path: "/class/:id",
-      element: <ClassDetail />,
+      element: <Layout />,
+      children: [
+        {
+          index: true,
+          element: <Dashboard />,
+        },
+        {
+          path: "class/:id",
+          element: <ClassDetail />,
+        },
+      ],
     },
   ]);
 
@@ -43,10 +50,9 @@ const Body = () => {
     });
 
     return () => {
-      //when we call unsubscribe it will remove onAuthStateChanged from the browser
       unsubscribe();
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>

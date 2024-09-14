@@ -1,7 +1,7 @@
+// Dashboard.js
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import ClassCard from "./ClassCard";
-import Header from "./Header";
 
 const Dashboard = () => {
   const [role, setRole] = useState("user");
@@ -42,9 +42,8 @@ const Dashboard = () => {
 
   return (
     <div className="flex">
-      <Header />
       <Sidebar role={role} onRoleChange={setRole} />
-      <div className="flex-grow p-4 mt-20">
+      <div className="flex-grow p-4">
         <h1 className="text-2xl font-bold mb-4">
           Welcome to the {role === "admin" ? "Admin" : "User"} Dashboard
         </h1>

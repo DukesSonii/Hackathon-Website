@@ -47,7 +47,7 @@ const ClassCard = ({ classes, isAdmin, onEdit, onDelete }) => {
   };
 
   const handleClassClick = (id) => {
-    navigate(`/class/${id}`);
+    navigate(`/home/class/${id}`);
   };
 
   return (
@@ -57,9 +57,8 @@ const ClassCard = ({ classes, isAdmin, onEdit, onDelete }) => {
         <div
           key={cls.id}
           className="flex justify-between items-center border-b py-2 cursor-pointer"
-          onClick={() => handleClassClick(cls.id)}
         >
-          <div>
+          <div onClick={() => handleClassClick(cls.id)}>
             <p className="font-medium">{cls.subject}</p>
             <p className="text-sm text-gray-600">{cls.section}</p>
           </div>
