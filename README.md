@@ -49,10 +49,11 @@ Make sure you have the following installed on your machine:
 ### References:
 - [Firebase](https://firebase.google.com/docs/reference/js/auth)
 
+Note: to see data in frontend, you have to run the backend server
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/class-management-app.git
+git clone https://github.com/DukesSonii/Hackathon-Website.git
 cd class-management-app
 
 
