@@ -3,7 +3,7 @@ import Sidebar from "./Sidebar";
 import ClassCard from "./ClassCard";
 import Header from "./Header";
 
-const App = () => {
+const Dashboard = () => {
   const [role, setRole] = useState("user");
   const [enrolledClasses, setEnrolledClasses] = useState([]);
 
@@ -17,16 +17,7 @@ const App = () => {
         const data = await response.json();
         const classes =
           data.find((item) => item.name === "Enrolled Classes")?.classes || [];
-
-        // Add a new class after fetching the existing ones
-        const newClass = {
-          id: classes.length + 1, // Assuming each class has a unique id
-          subject: "New Class Subject",
-          date: "2024-09-15",
-          time: "10:00 AM",
-        };
-
-        setEnrolledClasses([...classes, newClass]); // Add the new class below the existing ones
+        setEnrolledClasses(classes);
       } catch (error) {
         console.error("Error fetching classes:", error);
       }
@@ -35,7 +26,6 @@ const App = () => {
     fetchClasses();
   }, [role]);
 
-  // Function to handle class edit
   const handleEdit = (updatedClass) => {
     setEnrolledClasses((prevClasses) =>
       prevClasses.map((cls) =>
@@ -44,7 +34,6 @@ const App = () => {
     );
   };
 
-  // Function to handle class deletion
   const handleDelete = (deletedClass) => {
     setEnrolledClasses((prevClasses) =>
       prevClasses.filter((cls) => cls.id !== deletedClass.id)
@@ -70,4 +59,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Dashboard;

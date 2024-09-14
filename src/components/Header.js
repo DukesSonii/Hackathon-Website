@@ -7,12 +7,11 @@ import { addUser, removeUser } from "../utils/userSlice";
 import { onAuthStateChanged } from "firebase/auth";
 import { Class } from "../utils/constants";
 import { MenuOutlined } from "@ant-design/icons"; // Ant Design icon
-
+import { toggleMenu } from "../utils/Appslice";
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user); // Accessing the user globally across the component
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -49,16 +48,19 @@ function Header() {
       });
   };
 
+  const toggleMenuHandler = () => {
+    dispatch(toggleMenu());
+  };
+
   return (
     <div className="bg-gray-800 fixed top-0 left-0 w-full z-50 shadow-md">
       {user && (
         <>
           <div className="flex items-center px-4 py-3">
-            {/* Hamburger Menu and Logo next to each other */}
-            <div className="flex items-center">
+            <div className="flex items-center gap-5">
               <MenuOutlined
                 className="text-2xl text-white cursor-pointer mr-3"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                onClick={toggleMenuHandler}
               />
 
               <img

@@ -1,9 +1,9 @@
-// ClassCard.js
 import React from "react";
+import { useNavigate } from "react-router";
 
 const ClassCard = ({ classes, isAdmin, onEdit, onDelete }) => {
+  const navigate = useNavigate();
   const handleEdit = async (cls) => {
-    // Open a form/modal for editing
     const updatedClass = prompt(
       "Enter new details (subject, section) as comma-separated values:",
       `${cls.subject}, ${cls.section}`
@@ -14,7 +14,7 @@ const ClassCard = ({ classes, isAdmin, onEdit, onDelete }) => {
         .map((part) => part.trim());
       try {
         const response = await fetch(
-          `http://localhost:5000/classes/admin/${cls.id}`,
+          `http://localhost:5000/classes/${cls.id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -33,7 +33,7 @@ const ClassCard = ({ classes, isAdmin, onEdit, onDelete }) => {
     if (window.confirm("Are you sure you want to delete this class?")) {
       try {
         const response = await fetch(
-          `http://localhost:5000/classes/admin/${cls.id}`,
+          `http://localhost:5000/classes/${cls.id}`,
           {
             method: "DELETE",
           }
@@ -46,13 +46,18 @@ const ClassCard = ({ classes, isAdmin, onEdit, onDelete }) => {
     }
   };
 
+  const handleClassClick = (id) => {
+    navigate(`/class/${id}`);
+  };
+
   return (
     <div className="bg-white p-4 rounded shadow-lg mb-4">
       <h2 className="text-lg font-semibold mb-2">Enrolled Classes</h2>
       {classes.map((cls) => (
         <div
           key={cls.id}
-          className="flex justify-between items-center border-b py-2"
+          className="flex justify-between items-center border-b py-2 cursor-pointer"
+          onClick={() => handleClassClick(cls.id)}
         >
           <div>
             <p className="font-medium">{cls.subject}</p>

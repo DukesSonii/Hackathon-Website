@@ -5,21 +5,17 @@ const CreateClass = ({ onAddClass }) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  // Function to handle class creation
   const handleCreateClass = (e) => {
     e.preventDefault();
 
-    // Create a new class object
     const newClass = {
       subject,
       date,
       time,
     };
 
-    // Call the onAddClass function passed from App.js to add the class to the list
     onAddClass(newClass);
 
-    // Clear the form fields
     setSubject("");
     setDate("");
     setTime("");
