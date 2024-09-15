@@ -1,3 +1,9 @@
+# Video of the project
+
+https://github.com/user-attachments/assets/1ebf2466-f85a-4172-92ba-aa0c66540b72
+
+
+
 # Class Management Web Application
 
 This project is a web-based application built using React and Redux on the front-end, Firebase for authentication, and Node.js with Express on the back-end. It allows users to enroll in classes, view lectures, submit assignments, and engage in discussions, while admins can manage the classes, assignments, and comments.
