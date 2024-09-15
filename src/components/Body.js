@@ -1,4 +1,3 @@
-// Body.js
 import React, { useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
@@ -9,6 +8,8 @@ import Layout from "./Layout";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
 import ClassDetail from "./ClassDetail";
+import { RoleProvider } from "../utils/RoleContext"; // Import RoleProvider
+
 const Body = () => {
   const dispatch = useDispatch();
 
@@ -55,9 +56,9 @@ const Body = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <RoleProvider>
       <RouterProvider router={appRouter} />
-    </div>
+    </RoleProvider>
   );
 };
 

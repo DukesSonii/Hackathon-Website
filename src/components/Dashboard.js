@@ -1,11 +1,13 @@
-// Dashboard.js
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import ClassCard from "./ClassCard";
+import { useNavigate } from "react-router-dom";
+import { useRole } from "../utils/RoleContext";
 
 const Dashboard = () => {
-  const [role, setRole] = useState("user");
+  const { role, setRole } = useRole(); // Use role context
   const [enrolledClasses, setEnrolledClasses] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchClasses = async () => {
