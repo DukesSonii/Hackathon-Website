@@ -8,11 +8,18 @@ const ClassDetail = () => {
   const [lectures, setLectures] = useState([]);
   const [comments, setComments] = useState([]);
   const [assignments, setAssignments] = useState([]);
+  const [discussions, setDiscussions] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [newAssignment, setNewAssignment] = useState({
     title: "",
     dueDate: "",
     completedDate: "",
+  });
+  const [newDiscussion, setNewDiscussion] = useState({
+    title: "",
+    description: "",
+    image: null,
+    parentId: null,
   });
 
   useEffect(() => {
@@ -23,6 +30,7 @@ const ClassDetail = () => {
         setLectures(data.lectures);
         setComments(data.comments);
         setAssignments(data.assignments);
+        setDiscussions(data.discussions);
       } catch (error) {
         console.error("Error fetching class details:", error);
       }
@@ -71,6 +79,43 @@ const ClassDetail = () => {
     } catch (error) {
       console.error("Error adding assignment:", error);
     }
+  };
+
+  // const handleAddDiscussion = async () => {
+  //   const formData = new FormData();
+  //   formData.append("title", newDiscussion.title);
+  //   formData.append("description", newDiscussion.description);
+  //   if (newDiscussion.image) {
+  //     formData.append("image", newDiscussion.image);
+  //   }
+  //   formData.append("parentId", newDiscussion.parentId || "");
+
+  //   try {
+  //     const response = await fetch(
+  //       `http://localhost:5000/class/${id}/discussion`,
+  //       {
+  //         method: "POST",
+  //         body: formData,
+  //       }
+  //     );
+
+  //     if (response.ok) {
+  //       const newDiscussionData = await response.json();
+  //       setDiscussions((prev) => [...prev, newDiscussionData]);
+  //       setNewDiscussion({
+  //         title: "",
+  //         description: "",
+  //         image: null,
+  //         parentId: null,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error adding discussion:", error);
+  //   }
+  // };
+
+  const handleImageChange = (e) => {
+    setNewDiscussion({ ...newDiscussion, image: e.target.files[0] });
   };
 
   return (
@@ -182,6 +227,62 @@ const ClassDetail = () => {
             className="p-4 bg-white shadow-lg rounded-lg hover:shadow-2xl transition-shadow"
           >
             <p className="text-gray-900">{comment.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2 className="text-3xl font-semibold mt-10 mb-4 text-gray-800">
+        Discussions
+      </h2>
+      {role === "user" && (
+        <div className="mb-6 bg-white p-6 rounded-lg shadow-lg">
+          <input
+            type="text"
+            value={newDiscussion.title}
+            onChange={(e) =>
+              setNewDiscussion({ ...newDiscussion, title: e.target.value })
+            }
+            placeholder="Discussion Title"
+            className="border border-gray-300 p-3 rounded-lg w-full mb-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+          />
+          <textarea
+            value={newDiscussion.description}
+            onChange={(e) =>
+              setNewDiscussion({
+                ...newDiscussion,
+                description: e.target.value,
+              })
+            }
+            placeholder="Discussion Description"
+            className="border border-gray-300 p-3 rounded-lg w-full mb-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+          />
+          <input
+            type="file"
+            onChange={handleImageChange}
+            className="border border-gray-300 p-3 rounded-lg w-full mb-2"
+          />
+          <button className="bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 transition">
+            Add Discussion
+          </button>
+        </div>
+      )}
+      <div className="grid gap-6">
+        {discussions?.map((discussion) => (
+          <div
+            key={discussion.id}
+            className="p-4 bg-white shadow-lg rounded-lg hover:shadow-2xl transition-shadow"
+          >
+            <h3 className="text-lg font-medium text-gray-900">
+              {discussion.title}
+            </h3>
+            <p className="text-gray-700">{discussion.description}</p>
+            {discussion.image && (
+              <img
+                src={discussion.image}
+                alt="Discussion"
+                className="w-full h-48 object-cover mt-4 rounded-lg"
+              />
+            )}
           </div>
         ))}
       </div>
