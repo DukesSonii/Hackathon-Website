@@ -1,4 +1,4 @@
-# Video of the project
+# Video of the project - due to issues in uploading video in drive here is the full video of the website. Sorry for inconvenience caused
 
 https://github.com/user-attachments/assets/1ebf2466-f85a-4172-92ba-aa0c66540b72
 
