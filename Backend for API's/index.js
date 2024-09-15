@@ -322,6 +322,37 @@ app.post("/class/:id/comment", (req, res) => {
 });
 
 // Add discussion for users
+// Fetch discussions (users)
+app.get("/class/:id/discussions", async (req, res) => {
+  const { id } = req.params;
+  const discussions = await Discussion.find({ classId: id });
+  res.json(discussions);
+});
+
+// Add a new discussion (users)
+app.post("/class/:id/discussion", async (req, res) => {
+  const { id } = req.params;
+  const { text } = req.body;
+  const discussion = new Discussion({ classId: id, text });
+  await discussion.save();
+  res.json(discussion);
+});
+
+// Fetch questions (admins)
+app.get("/class/:id/questions", async (req, res) => {
+  const { id } = req.params;
+  const questions = await Question.find({ classId: id });
+  res.json(questions);
+});
+
+// Add a new question (admins)
+app.post("/class/:id/question", async (req, res) => {
+  const { id } = req.params;
+  const { text } = req.body;
+  const question = new Question({ classId: id, text });
+  await question.save();
+  res.json(question);
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;
