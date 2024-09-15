@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useRole } from "../utils/RoleContext";
+
 const ClassDetail = () => {
   const { id } = useParams();
   const { role } = useRole(); // Use role context
@@ -73,19 +74,28 @@ const ClassDetail = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-100">
-      <h2 className="text-3xl font-bold mb-6">Class Lectures</h2>
-      <ul className="mb-6">
+    <div className="p-8 bg-gray-50 min-h-screen">
+      <h2 className="text-4xl font-semibold mb-6 text-gray-800">
+        Class Lectures
+      </h2>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {lectures?.map((lecture) => (
-          <li key={lecture.id} className="p-2 bg-white rounded shadow mb-2">
-            {lecture.title}
-          </li>
+          <div
+            key={lecture.id}
+            className="p-4 bg-white shadow-lg rounded-lg hover:shadow-2xl transition-shadow"
+          >
+            <h3 className="text-lg font-medium text-gray-900">
+              {lecture.title}
+            </h3>
+          </div>
         ))}
-      </ul>
+      </div>
 
-      <h2 className="text-2xl font-bold mb-4">Assignments</h2>
+      <h2 className="text-3xl font-semibold mt-10 mb-4 text-gray-800">
+        Assignments
+      </h2>
       {role === "admin" && (
-        <div className="mb-6">
+        <div className="mb-6 bg-white p-6 rounded-lg shadow-lg">
           <input
             type="text"
             value={newAssignment.title}
@@ -93,7 +103,7 @@ const ClassDetail = () => {
               setNewAssignment({ ...newAssignment, title: e.target.value })
             }
             placeholder="Assignment Title"
-            className="border p-2 rounded w-full mb-2"
+            className="border border-gray-300 p-3 rounded-lg w-full mb-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
           />
           <input
             type="date"
@@ -101,7 +111,7 @@ const ClassDetail = () => {
             onChange={(e) =>
               setNewAssignment({ ...newAssignment, dueDate: e.target.value })
             }
-            className="border p-2 rounded w-full mb-2"
+            className="border border-gray-300 p-3 rounded-lg w-full mb-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
           />
           <input
             type="date"
@@ -112,59 +122,69 @@ const ClassDetail = () => {
                 completedDate: e.target.value,
               })
             }
-            className="border p-2 rounded w-full mb-2"
+            className="border border-gray-300 p-3 rounded-lg w-full mb-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
           />
           <button
             onClick={handleAddAssignment}
-            className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+            className="bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 transition"
           >
             Add Assignment
           </button>
         </div>
       )}
-      <ul>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {assignments?.map((assignment) => (
-          <li key={assignment.id} className="p-2 bg-white rounded shadow mb-2">
-            {assignment.title}
+          <div
+            key={assignment.id}
+            className="p-4 bg-white shadow-lg rounded-lg hover:shadow-2xl transition-shadow"
+          >
+            <h3 className="text-lg font-medium text-gray-900">
+              {assignment.title}
+            </h3>
             {assignment.dueDate && (
-              <div>
+              <div className="text-sm text-gray-600">
                 Due: {new Date(assignment.dueDate).toLocaleDateString()}
               </div>
             )}
             {assignment.completedDate && (
-              <div>
+              <div className="text-sm text-gray-600">
                 Completed:{" "}
                 {new Date(assignment.completedDate).toLocaleDateString()}
               </div>
             )}
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
 
-      <h2 className="text-2xl font-bold mb-4 mt-6">Comments</h2>
+      <h2 className="text-3xl font-semibold mt-10 mb-4 text-gray-800">
+        Comments
+      </h2>
       {role === "user" && (
-        <div className="mb-6">
+        <div className="mb-6 bg-white p-6 rounded-lg shadow-lg">
           <textarea
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="Add a comment"
-            className="border p-2 rounded w-full mb-2"
+            className="border border-gray-300 p-3 rounded-lg w-full mb-2 focus:ring-2 focus:ring-indigo-400 focus:outline-none"
           />
           <button
             onClick={handleAddComment}
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+            className="bg-indigo-500 text-white py-2 px-4 rounded-lg hover:bg-indigo-600 transition"
           >
             Add Comment
           </button>
         </div>
       )}
-      <ul>
+      <div className="grid gap-6">
         {comments?.map((comment) => (
-          <li key={comment.id} className="p-2 bg-white rounded shadow mb-2">
-            {comment.text}
-          </li>
+          <div
+            key={comment.id}
+            className="p-4 bg-white shadow-lg rounded-lg hover:shadow-2xl transition-shadow"
+          >
+            <p className="text-gray-900">{comment.text}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
